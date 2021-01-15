@@ -62,7 +62,7 @@ class BlogController extends Controller
     }
 
     //ブログ更新
-    public function exeUpdate(Request $request){
+    public function exeUpdate(BlogRequest $request){
 
         //ブログのデータを受け取る
         $inputs = $request ->all();
@@ -90,5 +90,28 @@ class BlogController extends Controller
             return redirect(route('blogs'));
     
     }
+    //ブログ削除画
+    public function exeDelete($id){
+        
+        
+        if(empty($id)){
+            \Session::flash('err_msg','データがありません');
+            return redirect(route('blogs'));
+        }
 
-}
+        try{
+            //ブログを削除
+            Blog::destroy($id);
+        }catch(\Throwable $e){
+            
+            abort(500);
+
+        }
+        \Session::flash('err_msg','削除しました');
+            return redirect(route('blogs'));
+        }
+    }
+
+    
+
+
